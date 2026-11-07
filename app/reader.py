@@ -3,6 +3,7 @@ import re
 
 
 def clean_text(text: str) -> str:
+    """Clean any of the input text from the PDF"""
     text = text.replace("■", " ")
     text = re.sub(r"-\n(\w)", r"\1", text)   # rejoin hyphenated line breaks
     text = re.sub(r"\s+", " ", text)
@@ -12,7 +13,8 @@ def clean_text(text: str) -> str:
 def read_pdf(path: str) -> str:
     """Read a PDF into text"""
     reader = PdfReader(path)
-    return "\n".join(page.extract_text() or "" for page in reader.pages)
+    text = "\n".join(page.extract_text() or "" for page in reader.pages)
+    return clean_text(text)
 
 
 def chunk_text(text: str, size: int = 200, overlap: int = 40) -> list[str]:
