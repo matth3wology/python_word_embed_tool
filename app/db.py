@@ -54,6 +54,12 @@ def insert_item(conn: psycopg.Connection, content: str, embedding) -> int:
     return row[0]
 
 
+def insert_items(conn: psycopg.Connection, content) -> int:
+    """Load chunks into the DB"""
+    for chunk, vec in content:
+        insert_item(conn, chunk, vec)
+
+
 def search(conn: psycopg.Connection, embedding, limit: int = 5):
     """Return [(content, similarity), ...] nearest first."""
     vec = Vector(embedding)
